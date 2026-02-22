@@ -11,13 +11,23 @@ from flask import (
 # -------------------------------
 # App Configuration
 # -------------------------------
-app = Flask(__name__)
-app.debug = False   # ⭐ ADDED FOR VERCEL
+# -------------------------------
+# App Configuration (VERCEL FIX)
+# -------------------------------
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-app.secret_key = 'your-secret-key-change-in-production'
-app.config['UPLOAD_FOLDER'] = 'uploads'
-DATABASE = 'database.db'
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+app = Flask(
+    __name__,
+    template_folder=os.path.join(BASE_DIR, "templates")
+)
+
+app.debug = False
+app.secret_key = "your-secret-key-change-in-production"
+
+app.config["UPLOAD_FOLDER"] = os.path.join(BASE_DIR, "uploads")
+DATABASE = os.path.join(BASE_DIR, "database.db")
+
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 # -------------------------------
 # Database helpers
