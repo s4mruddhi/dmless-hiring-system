@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Result – DMless</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0f1c;
+            min-height:100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding:20px;
+        }
+        .result-card {
+            background: rgba(30,41,59,0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 60px 50px;
+            max-width: 550px;
+            width: 100%;
+            border: 1px solid rgba(139,92,246,0.3);
+            text-align: center;
+        }
+        .icon { font-size:70px; margin-bottom:25px; }
+        h2 { font-size:38px; font-weight:700; margin-bottom:20px; }
+        p { color:#94a3b8; font-size:18px; line-height:1.6; margin-bottom:40px; }
+        .btn {
+            display:inline-block;
+            background: linear-gradient(135deg, #8b5cf6, #c084fc);
+            color:white; text-decoration:none; padding:16px 42px;
+            border-radius:50px; font-weight:600; font-size:18px;
+            transition:0.2s; box-shadow:0 8px 20px rgba(139,92,246,0.3);
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            transform:translateY(-3px);
+            box-shadow:0 15px 30px rgba(139,92,246,0.5);
+        }
+        .selected h2 { color:#4ade80; }
+        .rejected h2 { color:#f87171; }
+    </style>
+</head>
+<body>
+    <div class="result-card {% if status == 'selected' %}selected{% elif status == 'rejected' %}rejected{% endif %}">
+        {% if status == 'selected' %}
+            <div class="icon">✅</div>
+            <h2>You're shortlisted!</h2>
+            <p>Your resume has been received. The recruiter will reach out to you shortly.</p>
+        {% elif status == 'rejected' %}
+            <div class="icon">❌</div>
+            <h2>Not selected</h2>
+            <p>Unfortunately you did not pass the knockout questions. Thank you for your interest.</p>
+        {% else %}
+            <div class="icon">❓</div>
+            <h2>Result unknown</h2>
+            <p>We couldn't determine your status. Please try again.</p>
+        {% endif %}
+        <a href="{{ url_for('index') }}" class="btn">Return to home</a>
+    </div>
+</body>
+</html>

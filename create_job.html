@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Job – DMless</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0f1c;
+            color: #e2e8f0;
+            padding: 30px 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #c084fc;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .back-link:hover { color: #8b5cf6; padding-left: 5px; }
+        .card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 40px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #c084fc, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .form-group { margin-bottom: 24px; }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #334155;
+            border-radius: 20px;
+            font-size: 16px;
+            color: #f1f5f9;
+            transition: 0.2s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+        .question-block {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 28px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #334155;
+        }
+        .question-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #c084fc;
+        }
+        .option-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            background: rgba(30, 41, 59, 0.6);
+            padding: 10px 20px;
+            border-radius: 40px;
+            border: 1px solid #334155;
+        }
+        .option-row input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #8b5cf6;
+        }
+        .option-row input[type="text"] {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 8px 0;
+            color: #f1f5f9;
+        }
+        .option-row input[type="text"]:focus { border-bottom: 2px solid #8b5cf6; border-radius: 0; }
+        .btn-submit {
+            background: linear-gradient(135deg, #8b5cf6, #c084fc);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 18px;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+        }
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(139, 92, 246, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('dashboard') }}" class="back-link">← Back to dashboard</a>
+        <div class="card">
+            <h2>Create a new job</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label>Job role</label>
+                    <input type="text" name="role" placeholder="e.g. Senior Frontend Developer" required>
+                </div>
+                <div class="form-group">
+                    <label>Job description</label>
+                    <textarea name="description" placeholder="Describe the role, responsibilities, requirements..." required></textarea>
+                </div>
+
+                <h3 style="margin:30px 0 15px; color:#f1f5f9;">Knockout questions (5 required)</h3>
+                <p style="color:#94a3b8; margin-bottom:25px;">Select the correct answer for each question.</p>
+
+                {% for i in range(1,6) %}
+                <div class="question-block">
+                    <div class="question-title">Question {{ i }}</div>
+                    <div class="form-group">
+                        <label>Question text</label>
+                        <input type="text" name="q{{ i }}" placeholder="e.g. What is the capital of France?" required>
+                    </div>
+                    <label style="margin-bottom:10px;">Options (select the correct one)</label>
+                    <div class="option-row">
+                        <input type="radio" name="q{{ i }}correct" value="1" required>
+                        <input type="text" name="q{{ i }}opt1" placeholder="Option 1" required>
+                    </div>
+                    <div class="option-row">
+                        <input type="radio" name="q{{ i }}correct" value="2" required>
+                        <input type="text" name="q{{ i }}opt2" placeholder="Option 2" required>
+                    </div>
+                    <div class="option-row">
+                        <input type="radio" name="q{{ i }}correct" value="3" required>
+                        <input type="text" name="q{{ i }}opt3" placeholder="Option 3" required>
+                    </div>
+                    <div class="option-row">
+                        <input type="radio" name="q{{ i }}correct" value="4" required>
+                        <input type="text" name="q{{ i }}opt4" placeholder="Option 4" required>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="btn-submit">Generate hiring link</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
