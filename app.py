@@ -11,9 +11,6 @@ from flask import (
 # -------------------------------
 # App Configuration
 # -------------------------------
-# -------------------------------
-# App Configuration (VERCEL FIX)
-# -------------------------------
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 app = Flask(
@@ -24,6 +21,11 @@ app = Flask(
 app.debug = False
 app.secret_key = "your-secret-key-change-in-production"
 
+# Use /tmp for uploads and database on Vercel (optional – still ephemeral)
+# if os.environ.get('VERCEL'):
+#     app.config["UPLOAD_FOLDER"] = "/tmp/uploads"
+#     DATABASE = "/tmp/database.db"
+# else:
 app.config["UPLOAD_FOLDER"] = os.path.join(BASE_DIR, "uploads")
 DATABASE = os.path.join(BASE_DIR, "database.db")
 
@@ -353,7 +355,7 @@ def download_resume(filename):
 def candidate_info():
     return render_template('candidate_info.html')
 
-# ⭐ UPDATED FOR VERCEL DEPLOYMENT
+# For local development only
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)
